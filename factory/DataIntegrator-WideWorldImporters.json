@@ -1,0 +1,9 @@
+{
+	"name": "DataIntegrator-WideWorldImporters",
+	"location": "westeurope",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "4b6140a8-87dd-4564-9dec-348318ea507e",
+		"tenantId": "ccbf268f-577b-478f-ba17-ebd50ea881f5"
+	}
+}
