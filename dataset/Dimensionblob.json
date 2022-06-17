@@ -1,0 +1,21 @@
+{
+	"name": "Dimensionblob",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "WWI_Integration_Blob_Storage",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"container": "wwi-integration"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}
