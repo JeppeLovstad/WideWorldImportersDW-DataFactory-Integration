@@ -175,7 +175,17 @@
 							"outputs": [
 								{
 									"referenceName": "SQLTableLoader",
-									"type": "DatasetReference"
+									"type": "DatasetReference",
+									"parameters": {
+										"TableSchema": {
+											"value": "@item().SchemaName",
+											"type": "Expression"
+										},
+										"TableName": {
+											"value": "concat(@item().TableName , '_Staging')",
+											"type": "Expression"
+										}
+									}
 								}
 							]
 						}
