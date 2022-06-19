@@ -1,0 +1,22 @@
+{
+	"name": "Fact_Sale_blob",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "WWI_Integration_Blob_Storage",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"container": "wwi-integration"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}
