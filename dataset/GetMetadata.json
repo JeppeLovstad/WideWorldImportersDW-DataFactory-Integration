@@ -1,0 +1,46 @@
+{
+	"name": "GetMetadata",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDatabase1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "SchemaName",
+				"type": "varchar"
+			},
+			{
+				"name": "TableName",
+				"type": "varchar"
+			},
+			{
+				"name": "Enabled",
+				"type": "bit"
+			},
+			{
+				"name": "BlobContainer",
+				"type": "varchar"
+			},
+			{
+				"name": "BlobName",
+				"type": "varchar"
+			},
+			{
+				"name": "FileExtension",
+				"type": "varchar"
+			},
+			{
+				"name": "LastMoveDate",
+				"type": "datetime2",
+				"scale": 7
+			}
+		],
+		"typeProperties": {
+			"schema": "IntegrationMetadata",
+			"table": "TablesToMove"
+		}
+	}
+}
