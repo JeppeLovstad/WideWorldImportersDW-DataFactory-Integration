@@ -6,12 +6,25 @@
 			"type": "LinkedServiceReference"
 		},
 		"parameters": {
-			"TableFullName": {
+			"TableSchema": {
+				"type": "string"
+			},
+			"TableName": {
 				"type": "string"
 			}
 		},
 		"annotations": [],
 		"type": "SqlServerTable",
-		"schema": []
+		"schema": [],
+		"typeProperties": {
+			"schema": {
+				"value": "@dataset().TableSchema",
+				"type": "Expression"
+			},
+			"table": {
+				"value": "@dataset().TableName",
+				"type": "Expression"
+			}
+		}
 	}
 }
