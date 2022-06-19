@@ -126,24 +126,25 @@
 							],
 							"typeProperties": {
 								"source": {
-									"type": "SqlServerSource",
-									"sqlReaderQuery": {
-										"value": "@concat('Select * from ', item().SchemaName, '.', item().TableName)",
-										"type": "Expression"
-									},
-									"queryTimeout": "02:00:00",
-									"partitionOption": "None"
-								},
-								"sink": {
-									"type": "DelimitedTextSink",
+									"type": "DelimitedTextSource",
 									"storeSettings": {
-										"type": "AzureBlobStorageWriteSettings"
+										"type": "AzureBlobStorageReadSettings",
+										"recursive": true,
+										"enablePartitionDiscovery": false
 									},
 									"formatSettings": {
-										"type": "DelimitedTextWriteSettings",
-										"quoteAllText": true,
-										"fileExtension": ".csv"
+										"type": "DelimitedTextReadSettings"
 									}
+								},
+								"sink": {
+									"type": "SqlServerSink",
+									"preCopyScript": {
+										"value": "@{concat('truncate table ', item().SchemaName, '.', item().TableName,'_Staging')}",
+										"type": "Expression"
+									},
+									"writeBehavior": "insert",
+									"sqlWriterUseTableLock": false,
+									"tableOption": "autoCreate"
 								},
 								"enableStaging": false,
 								"translator": {
@@ -157,12 +158,6 @@
 							},
 							"inputs": [
 								{
-									"referenceName": "SQLTableLoader",
-									"type": "DatasetReference"
-								}
-							],
-							"outputs": [
-								{
 									"referenceName": "BlobStorageSetter",
 									"type": "DatasetReference",
 									"parameters": {
@@ -175,6 +170,12 @@
 											"type": "Expression"
 										}
 									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "SQLTableLoader",
+									"type": "DatasetReference"
 								}
 							]
 						}
