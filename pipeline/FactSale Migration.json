@@ -82,7 +82,99 @@
 							"outputs": [
 								{
 									"referenceName": "BlobStorageSetter",
+									"type": "DatasetReference",
+									"parameters": {
+										"FolderName": {
+											"value": "@item().BlobFolder",
+											"type": "Expression"
+										},
+										"FileName": {
+											"value": "@item().BlobName",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						},
+						{
+							"name": "Copy from on prem to storage_copy1",
+							"type": "Copy",
+							"dependsOn": [
+								{
+									"activity": "Copy from on prem to storage",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [
+								{
+									"name": "Source",
+									"value": "Fact.Sale"
+								},
+								{
+									"name": "Destination",
+									"value": "wwi-integration//Fact.Sale.csv"
+								}
+							],
+							"typeProperties": {
+								"source": {
+									"type": "SqlServerSource",
+									"sqlReaderQuery": {
+										"value": "@concat('Select * from ', item().SchemaName, '.', item().TableName)",
+										"type": "Expression"
+									},
+									"queryTimeout": "02:00:00",
+									"partitionOption": "None"
+								},
+								"sink": {
+									"type": "DelimitedTextSink",
+									"storeSettings": {
+										"type": "AzureBlobStorageWriteSettings"
+									},
+									"formatSettings": {
+										"type": "DelimitedTextWriteSettings",
+										"quoteAllText": true,
+										"fileExtension": ".csv"
+									}
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "SQLTableLoader",
 									"type": "DatasetReference"
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "BlobStorageSetter",
+									"type": "DatasetReference",
+									"parameters": {
+										"FolderName": {
+											"value": "@item().BlobFolder",
+											"type": "Expression"
+										},
+										"FileName": {
+											"value": "@item().BlobName",
+											"type": "Expression"
+										}
+									}
 								}
 							]
 						}
@@ -104,6 +196,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
+						"sqlReaderQuery": "select * from IntegrationMetadata.TablesToMove \nwhere Enabled = 1",
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
