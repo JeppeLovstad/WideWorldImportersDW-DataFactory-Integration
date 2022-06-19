@@ -10,6 +10,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
+				"fileName": "Fact.Sale.csv",
 				"container": "wwi-integration"
 			},
 			"columnDelimiter": ",",
