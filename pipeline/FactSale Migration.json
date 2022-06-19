@@ -362,9 +362,11 @@
 						"type": "DelimitedTextSource",
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
-							"recursive": true,
+							"recursive": false,
 							"modifiedDatetimeStart": "2022-06-19T00:00:00.202Z",
 							"modifiedDatetimeEnd": "2022-06-19T00:00:00.085Z",
+							"wildcardFolderPath": "*",
+							"wildcardFileName": "Fact.Sale.csv",
 							"enablePartitionDiscovery": false
 						},
 						"formatSettings": {
