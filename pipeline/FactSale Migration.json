@@ -3,11 +3,11 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "ForEach1",
+				"name": "For Each table",
 				"type": "ForEach",
 				"dependsOn": [
 					{
-						"activity": "Lookup1",
+						"activity": "Get Tables to move Metadata",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -193,7 +193,7 @@
 				}
 			},
 			{
-				"name": "Lookup1",
+				"name": "Get Tables to move Metadata",
 				"type": "Lookup",
 				"dependsOn": [],
 				"policy": {
