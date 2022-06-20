@@ -7,7 +7,7 @@
 				"type": "ForEach",
 				"dependsOn": [
 					{
-						"activity": "Get Tables to move Metadata",
+						"activity": "LookUpMetadata",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -16,7 +16,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('Lookup1').output.value",
+						"value": "@activity('LookUpMetadata').output.value",
 						"type": "Expression"
 					},
 					"isSequential": false,
@@ -97,11 +97,11 @@
 							]
 						},
 						{
-							"name": "Copy from on prem to storage_copy1",
+							"name": "Copy from Storage to AzureDB",
 							"type": "Copy",
 							"dependsOn": [
 								{
-									"activity": "Copy from on prem to storage",
+									"activity": "Truncate staging Table",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -137,14 +137,9 @@
 									}
 								},
 								"sink": {
-									"type": "SqlServerSink",
-									"preCopyScript": {
-										"value": "@{concat('truncate table ', item().SchemaName, '.', item().TableName,'_Staging')}",
-										"type": "Expression"
-									},
+									"type": "AzureSqlSink",
 									"writeBehavior": "insert",
-									"sqlWriterUseTableLock": false,
-									"tableOption": "autoCreate"
+									"sqlWriterUseTableLock": false
 								},
 								"enableStaging": false,
 								"translator": {
@@ -174,26 +169,61 @@
 							],
 							"outputs": [
 								{
-									"referenceName": "SQLTableLoader",
+									"referenceName": "AzureSQLInserter",
 									"type": "DatasetReference",
 									"parameters": {
 										"TableSchema": {
-											"value": "@item().SchemaName",
+											"value": "@item().TableSchema",
 											"type": "Expression"
 										},
 										"TableName": {
-											"value": "concat(@item().TableName , '_Staging')",
+											"value": "@item().TableName",
 											"type": "Expression"
 										}
 									}
 								}
 							]
+						},
+						{
+							"name": "Truncate staging Table",
+							"type": "Script",
+							"dependsOn": [
+								{
+									"activity": "Copy from on prem to storage",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"linkedServiceName": {
+								"referenceName": "AzureSqlDatabase1",
+								"type": "LinkedServiceReference"
+							},
+							"typeProperties": {
+								"scripts": [
+									{
+										"type": "NonQuery",
+										"text": {
+											"value": "@concat('Truncate Table Integration.', item().TableName)",
+											"type": "Expression"
+										}
+									}
+								]
+							}
 						}
 					]
 				}
 			},
 			{
-				"name": "Get Tables to move Metadata",
+				"name": "LookUpMetadata",
 				"type": "Lookup",
 				"dependsOn": [],
 				"policy": {
